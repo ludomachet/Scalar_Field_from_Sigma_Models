@@ -21,7 +21,8 @@ else
 endif
 endif
 
-GRCHOMBO_SOURCE = ../../Source
+# User needs to specify GRCHOMBO_SOURCE location, e.g. using
+# export GRCHOMBO_SOURCE = ~/GRChombo/Source
 
 ebase :=  Main_AxiDilatonBinary
 
