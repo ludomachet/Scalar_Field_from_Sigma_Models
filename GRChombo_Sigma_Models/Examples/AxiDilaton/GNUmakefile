@@ -6,7 +6,8 @@
 # Included makefiles need an absolute path to the Chombo installation
 # CHOMBO_HOME := Please set the CHOMBO_HOME locally (e.g. export CHOMBO_HOME=... in bash)
 
-GRCHOMBO_SOURCE = ../../Source
+# User needs to specify GRCHOMBO_SOURCE location, e.g. using
+# export GRCHOMBO_SOURCE = ~/GRChombo/Source
 
 ebase := Main_AxiDilaton
 
