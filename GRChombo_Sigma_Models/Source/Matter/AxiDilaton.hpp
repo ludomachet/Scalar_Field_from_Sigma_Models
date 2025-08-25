@@ -6,8 +6,8 @@
 #ifndef AXIDILATON_HPP_
 #define AXIDILATON_HPP_
 
-#include "CCZ4Geometry.hpp"
 #include "AxiDilatonPotential.hpp"
+#include "CCZ4Geometry.hpp"
 #include "DefaultComplexPotential.hpp"
 #include "DimensionDefinitions.hpp"
 #include "FourthOrderDerivatives.hpp"
@@ -19,7 +19,7 @@
 //!  Calculates the matter type specific elements such as the EMTensor and
 //   matter evolution
 
-template <class potential_t = AxiDilatonPotential> class AxiDilaton 
+template <class potential_t = AxiDilatonPotential> class AxiDilaton
 {
   protected:
     //! The local copy of the potential
@@ -29,7 +29,8 @@ template <class potential_t = AxiDilatonPotential> class AxiDilaton
   public:
     //!  Constructor of class AxiDilaton, inputs are the matter parameters.
     AxiDilaton(const potential_t a_potential, double a_gamma_squared_coeff)
-        : my_potential(a_potential), m_gamma_squared_coeff(a_gamma_squared_coeff) 
+        : my_potential(a_potential),
+          m_gamma_squared_coeff(a_gamma_squared_coeff)
     {
     }
 
@@ -101,9 +102,8 @@ template <class potential_t = AxiDilatonPotential> class AxiDilaton
         const Tensor<1, data_t>
             &d1_phi_Im, //!< the value of the first deriv of phi_Im
         const Tensor<2, data_t> &h_UU, //!< the inverse metric (raised indices).
-        const Tensor<3, data_t>
-            &chris_ULL) 
-    const    ; //!< the conformal christoffel symbol
+        const Tensor<3, data_t> &chris_ULL)
+        const; //!< the conformal christoffel symbol
 
     //! The function which adds in the RHS for the matter field vars,
     //! including the potential
@@ -125,7 +125,7 @@ template <class potential_t = AxiDilatonPotential> class AxiDilaton
         CSFObject<data_t>
             &rhs_csf, //!< the value of the RHS terms for the sf vars
         const vars_t<data_t> &vars,        //!< the values of all the variables
-         const CSFObject<data_t> &vars_csf, //!< the value of the sf variables
+        const CSFObject<data_t> &vars_csf, //!< the value of the sf variables
         const vars_t<Tensor<1, data_t>> &d1, //!< the value of the 1st derivs
         const Tensor<1, data_t>
             &d1_phi_Re, //!< the value of the 1st derivs of phi_Re
@@ -135,9 +135,8 @@ template <class potential_t = AxiDilatonPotential> class AxiDilaton
             &d2_phi_Re, //!< the value of the 2nd derivs of phi_Re
         const Tensor<2, data_t>
             &d2_phi_Im, //!< the value of the 2nd derivs of phi_Im
-        const CSFObject<data_t>
-            &advec_csf)
-    const    ; //!< advection terms for the csf vars
+        const CSFObject<data_t> &advec_csf)
+        const; //!< advection terms for the csf vars
 };
 
 #include "AxiDilaton.impl.hpp"
