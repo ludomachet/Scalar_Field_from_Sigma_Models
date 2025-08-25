@@ -27,17 +27,21 @@ class AxiDilatonPotential
     template <class data_t, template <typename> class vars_t>
     void compute_potential(data_t &V_of_modulus_phi_squared,
                            data_t &dVdmodulus_phi_squared,
-                           const vars_t<data_t> &vars, double gamma_squared_coeff) const
+                           const vars_t<data_t> &vars,
+                           double gamma_squared_coeff) const
     {
         // First calculate |phi|^2
         data_t modulus_phi_squared =
             vars.phi_Re * vars.phi_Re + vars.phi_Im * vars.phi_Im;
         // The potential value at phi
-        V_of_modulus_phi_squared = 0.5 * pow(m_params.scalar_mass, 2.0) * modulus_phi_squared / (1.0-gamma_squared_coeff * modulus_phi_squared / 4.0);
+        V_of_modulus_phi_squared =
+            0.5 * pow(m_params.scalar_mass, 2.0) * modulus_phi_squared /
+            (1.0 - gamma_squared_coeff * modulus_phi_squared / 4.0);
 
         // The potential gradient at phi
         // THIS IS WRONG!!
-           //dVdmodulus_phi_squared = pow(m_params.scalar_mass, 2.0) /(2.0 * pow(1.0-gamma_squared_coeff * modulus_phi_squared / 4.0,2.0));
+        // dVdmodulus_phi_squared = pow(m_params.scalar_mass, 2.0) /(2.0 *
+        // pow(1.0-gamma_squared_coeff * modulus_phi_squared / 4.0,2.0));
         dVdmodulus_phi_squared = pow(m_params.scalar_mass, 2.0) / 2.0;
     }
 };

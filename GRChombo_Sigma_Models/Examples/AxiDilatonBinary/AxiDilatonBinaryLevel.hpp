@@ -9,9 +9,9 @@
 #include "DefaultLevelFactory.hpp"
 #include "GRAMRLevel.hpp"
 // TPAMR.hpp includes BHAMR.hpp
-#include "TPAMR.hpp"
-#include "AxiDilatonPotential.hpp"
 #include "AxiDilaton.hpp"
+#include "AxiDilatonPotential.hpp"
+#include "TPAMR.hpp"
 
 class AxiDilatonBinaryLevel : public GRAMRLevel
 {

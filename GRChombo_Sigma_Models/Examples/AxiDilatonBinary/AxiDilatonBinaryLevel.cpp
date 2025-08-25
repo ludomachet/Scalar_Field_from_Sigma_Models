@@ -7,22 +7,22 @@
 #include "AMRReductions.hpp"
 #include "BinaryBH.hpp"
 #include "BoxLoops.hpp"
-#include "MatterCCZ4RHS.hpp"
 #include "ChiExtractionTaggingCriterion.hpp"
 #include "ChiPunctureExtractionTaggingCriterion.hpp"
 #include "ComputePack.hpp"
+#include "MatterCCZ4RHS.hpp"
+#include "MatterWeyl4.hpp"
 #include "NanCheck.hpp"
 #include "NewConstraints.hpp"
 #include "PositiveChiAndAlpha.hpp"
 #include "PunctureTracker.hpp"
+#include "ScalarExtraction.hpp"
 #include "SetValue.hpp"
 #include "SixthOrderDerivatives.hpp"
 #include "SmallDataIO.hpp"
 #include "TraceARemoval.hpp"
 #include "TwoPuncturesInitialData.hpp"
-#include "MatterWeyl4.hpp"
 #include "WeylExtraction.hpp"
-#include "ScalarExtraction.hpp"
 
 // For RHS update
 #include "MatterCCZ4RHS.hpp"
@@ -31,16 +31,14 @@
 #include "NewMatterConstraints.hpp"
 
 // Problem specific
+#include "AxiDilaton.hpp"
+#include "AxiDilatonPotential.hpp"
 #include "GammaCalculator.hpp"
 #include "InitialAxiDilatonData.hpp"
-#include "AxiDilatonPotential.hpp"
-#include "AxiDilaton.hpp"
-
 
 // ADM quantities
 #include "ADMQuantities.hpp"
 #include "ADMQuantitiesExtraction.hpp"
-
 
 // Things to do during the advance step after RK4 steps
 void AxiDilatonBinaryLevel::specificAdvance()
@@ -75,23 +73,28 @@ void AxiDilatonBinaryLevel::initialData()
 
     // First set everything to zero (to avoid undefinded values in constraints)
     // then calculate initial data
-    BoxLoops::loop(make_compute_pack(SetValue(0.), binary,
-                    InitialAxiDilatonData(m_p.initial_params, m_dx)),
-     m_state_new, m_state_new, INCLUDE_GHOST_CELLS);
+    BoxLoops::loop(
+        make_compute_pack(SetValue(0.), binary,
+                          InitialAxiDilatonData(m_p.initial_params, m_dx)),
+        m_state_new, m_state_new, INCLUDE_GHOST_CELLS);
 #endif
 }
 
 // Calculate RHS during RK4 substeps
-void AxiDilatonBinaryLevel::specificEvalRHS(GRLevelData &a_soln, GRLevelData &a_rhs,
-                                    const double a_time)
+void AxiDilatonBinaryLevel::specificEvalRHS(GRLevelData &a_soln,
+                                            GRLevelData &a_rhs,
+                                            const double a_time)
 {
     // Enforce positive chi and alpha and trace free A
-    BoxLoops::loop(make_compute_pack(TraceARemoval(), PositiveChiAndAlpha(m_p.min_chi, m_p.min_lapse)),
-                   a_soln, a_soln, INCLUDE_GHOST_CELLS);
+    BoxLoops::loop(
+        make_compute_pack(TraceARemoval(),
+                          PositiveChiAndAlpha(m_p.min_chi, m_p.min_lapse)),
+        a_soln, a_soln, INCLUDE_GHOST_CELLS);
 
     // Calculate MatterCCZ4 right hand side with matter_t = ScalarField
     AxiDilatonPotential potential(m_p.potential_params);
-    AxiDilatonWithPotential axi_dilaton_field(potential, m_p.gamma_squared_coeff);
+    AxiDilatonWithPotential axi_dilaton_field(potential,
+                                              m_p.gamma_squared_coeff);
     if (m_p.max_spatial_derivative_order == 4)
     {
         MatterCCZ4RHS<AxiDilatonWithPotential, MovingPunctureGauge,
@@ -112,7 +115,8 @@ void AxiDilatonBinaryLevel::specificEvalRHS(GRLevelData &a_soln, GRLevelData &a_
 
 // enforce trace removal during RK4 substeps
 void AxiDilatonBinaryLevel::specificUpdateODE(GRLevelData &a_soln,
-                                      const GRLevelData &a_rhs, Real a_dt)
+                                              const GRLevelData &a_rhs,
+                                              Real a_dt)
 {
     // Enforce the trace free A_ij condition
     BoxLoops::loop(TraceARemoval(), a_soln, a_soln, INCLUDE_GHOST_CELLS);
@@ -232,12 +236,15 @@ void AxiDilatonBinaryLevel::specificPostTimeStep()
     {
         fillAllGhosts();
         // BoxLoops::loop(Constraints(m_dx, c_Ham, Interval(c_Mom1, c_Mom3)),
-        //                m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
+        //                m_state_new, m_state_diagnostics,
+        //                EXCLUDE_GHOST_CELLS);
         AxiDilatonPotential potential(m_p.potential_params);
-        AxiDilatonWithPotential axi_dilaton_field(potential, m_p.gamma_squared_coeff);
+        AxiDilatonWithPotential axi_dilaton_field(potential,
+                                                  m_p.gamma_squared_coeff);
         BoxLoops::loop(MatterConstraints<AxiDilatonWithPotential>(
-            axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham, Interval(c_Mom1, c_Mom3)),
-        m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
+                           axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham,
+                           Interval(c_Mom1, c_Mom3)),
+                       m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
         if (m_level == 0)
         {
             AMRReductions<VariableType::diagnostic> amr_reductions(m_gr_amr);
@@ -287,21 +294,25 @@ void AxiDilatonBinaryLevel::prePlotLevel()
     if (m_p.activate_extraction == 1)
     {
         AxiDilatonPotential potential(m_p.potential_params);
-        AxiDilatonWithPotential axi_dilaton_field(potential, m_p.gamma_squared_coeff);
+        AxiDilatonWithPotential axi_dilaton_field(potential,
+                                                  m_p.gamma_squared_coeff);
         BoxLoops::loop(
             make_compute_pack(
                 Weyl4(m_p.extraction_params.center, m_dx, m_p.formulation),
                 MatterConstraints<AxiDilatonWithPotential>(
-                    axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham, Interval(c_Mom1, c_Mom3))),
-                m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
+                    axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham,
+                    Interval(c_Mom1, c_Mom3))),
+            m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
     }
     else
     {
         AxiDilatonPotential potential(m_p.potential_params);
-        AxiDilatonWithPotential axi_dilaton_field(potential, m_p.gamma_squared_coeff);
+        AxiDilatonWithPotential axi_dilaton_field(potential,
+                                                  m_p.gamma_squared_coeff);
         BoxLoops::loop(MatterConstraints<AxiDilatonWithPotential>(
-            axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham, Interval(c_Mom1, c_Mom3)),
-        m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
+                           axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham,
+                           Interval(c_Mom1, c_Mom3)),
+                       m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
     }
 }
 #endif /* CH_USE_HDF5 */

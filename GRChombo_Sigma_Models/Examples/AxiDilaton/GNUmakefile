@@ -6,19 +6,16 @@
 # Included makefiles need an absolute path to the Chombo installation
 # CHOMBO_HOME := Please set the CHOMBO_HOME locally (e.g. export CHOMBO_HOME=... in bash)
 
-# User needs to specify GRCHOMBO_SOURCE location, e.g. using
-# export GRCHOMBO_SOURCE = ~/GRChombo/Source
+GRCHOMBO_SOURCE = ../../Source
 
 ebase := Main_AxiDilaton
 
 LibNames := AMRTimeDependent AMRTools BoxTools
 
 src_dirs := $(GRCHOMBO_SOURCE)/utils \
-	    ../../Source/utils \
             $(GRCHOMBO_SOURCE)/simd  \
             $(GRCHOMBO_SOURCE)/CCZ4  \
             $(GRCHOMBO_SOURCE)/Matter  \
-	    ../../Source/Matter \
             $(GRCHOMBO_SOURCE)/BoxUtils  \
             $(GRCHOMBO_SOURCE)/GRChomboCore  \
             $(GRCHOMBO_SOURCE)/TaggingCriteria  \

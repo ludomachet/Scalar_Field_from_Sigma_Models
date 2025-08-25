@@ -12,10 +12,10 @@
 
 // Problem specific includes:
 #include "ArrayTools.hpp"
-#include "BoostedBH.hpp"
-#include "InitialAxiDilatonData.hpp"
 #include "AxiDilaton.hpp"
 #include "AxiDilatonPotential.hpp"
+#include "BoostedBH.hpp"
+#include "InitialAxiDilatonData.hpp"
 #include "SphericalExtraction.hpp"
 #ifdef USE_TWOPUNCTURES
 #include "TP_Parameters.hpp"
@@ -352,13 +352,13 @@ class SimulationParameters : public SimulationParametersBase
                         tp_params.TP_Extend_Radius >= 0., "must be >= 0.0");
 #else
         warn_parameter("scalar_mass", potential_params.scalar_mass,
-            potential_params.scalar_mass <
-                        0.2 / coarsest_dx / dt_multiplier,
-            "oscillations of scalar field do not appear to be "
-            "resolved on coarsest level");
+                       potential_params.scalar_mass <
+                           0.2 / coarsest_dx / dt_multiplier,
+                       "oscillations of scalar field do not appear to be "
+                       "resolved on coarsest level");
         warn_parameter("scalar_width", initial_params.width,
-            initial_params.width < 0.5 * L,
-            "is greater than half the domain size");            
+                       initial_params.width < 0.5 * L,
+                       "is greater than half the domain size");
         warn_parameter("massA", bh1_params.mass, bh1_params.mass >= 0,
                        "should be >= 0");
         warn_parameter("massB", bh2_params.mass, bh2_params.mass >= 0,
@@ -401,7 +401,8 @@ class SimulationParameters : public SimulationParametersBase
     AxiDilatonPotential::params_t potential_params;
     double gamma_squared_coeff;
 
-    bool track_punctures, calculate_constraint_norms, activate_scalar_extraction;
+    bool track_punctures, calculate_constraint_norms,
+        activate_scalar_extraction;
     spherical_extraction_params_t scalar_extraction_params;
     int puncture_tracking_level;
 

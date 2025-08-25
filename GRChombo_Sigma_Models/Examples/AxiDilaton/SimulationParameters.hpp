@@ -11,9 +11,9 @@
 #include "SimulationParametersBase.hpp"
 
 // Problem specific includes:
-#include "InitialAxiDilatonData.hpp"
 #include "AxiDilaton.hpp"
 #include "AxiDilatonPotential.hpp"
+#include "InitialAxiDilatonData.hpp"
 #include "KerrBH.hpp"
 
 class SimulationParameters : public SimulationParametersBase
@@ -94,8 +94,9 @@ class SimulationParameters : public SimulationParametersBase
     KerrBH::params_t kerr_params;
     double gamma_squared_coeff;
 
-    double threshold_chi; // Tagging thresholds (I should probably put these somewhere else)
-    double threshold_phi; 
+    double threshold_chi; // Tagging thresholds (I should probably put these
+                          // somewhere else)
+    double threshold_phi;
 
 #ifdef USE_AHFINDER
     double AH_initial_guess;

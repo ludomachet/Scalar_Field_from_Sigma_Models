@@ -38,7 +38,7 @@ int runGRChombo(int argc, char *argv[])
     // and an associated LevelFactory)
     BHAMR bh_amr;
     DefaultLevelFactory<AxiDilatonLevel> axi_dilaton_level_fact(bh_amr,
-                                                                  sim_params);
+                                                                sim_params);
     setupAMRObject(bh_amr, axi_dilaton_level_fact);
 
     // call this after amr object setup so grids known

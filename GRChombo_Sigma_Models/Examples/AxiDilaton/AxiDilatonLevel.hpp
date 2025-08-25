@@ -10,13 +10,14 @@
 #include "DefaultLevelFactory.hpp"
 #include "GRAMRLevel.hpp"
 // Problem specific includes
-#include "AxiDilatonPotential.hpp"
 #include "AxiDilaton.hpp"
+#include "AxiDilatonPotential.hpp"
 
-//!  A class for the evolution of a axi-Dilaton field, minimally coupled to gravity
+//!  A class for the evolution of a axi-Dilaton field, minimally coupled to
+//!  gravity
 /*!
-     The class takes some initial data for a complex scalar field (variables phi and Pi)
-     and evolves it using the CCZ4 equations.
+     The class takes some initial data for a complex scalar field (variables phi
+   and Pi) and evolves it using the CCZ4 equations.
 */
 class AxiDilatonLevel : public GRAMRLevel
 {

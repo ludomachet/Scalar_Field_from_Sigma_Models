@@ -61,7 +61,8 @@ int runGRChombo(int argc, char *argv[])
     // The line below selects the problem that is simulated
     // (To simulate a different problem, define a new child of AMRLevel
     // and an associated LevelFactory)
-    DefaultLevelFactory<AxiDilatonBinaryLevel> binary_bh_level_fact(bh_amr, sim_params);
+    DefaultLevelFactory<AxiDilatonBinaryLevel> binary_bh_level_fact(bh_amr,
+                                                                    sim_params);
     setupAMRObject(bh_amr, binary_bh_level_fact);
 
     // call this after amr object setup so grids known

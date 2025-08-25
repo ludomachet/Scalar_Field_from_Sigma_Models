@@ -6,13 +6,13 @@
 #ifndef INITIALAXIDILATONDATA_HPP_
 #define INITIALAXIDILATONDATA_HPP_
 
+#include "AxiDilaton.hpp"
 #include "Cell.hpp"
+#include "Complex.hpp"
 #include "Coordinates.hpp"
 #include "MatterCCZ4RHS.hpp"
-#include "AxiDilaton.hpp"
-#include "Tensor.hpp"
-#include "Complex.hpp"
 #include "SphericalHarmonics.hpp"
+#include "Tensor.hpp"
 #include "UserVariables.hpp" //This files needs NUM_VARS - total no. components
 #include "VarsTools.hpp"
 #include "simd.hpp"
@@ -27,10 +27,10 @@ class InitialAxiDilatonData
     {
         double amplitude; //!< Amplitude of bump in initial SF bubble
         std::array<double, CH_SPACEDIM>
-            center;   //!< Centre of perturbation in initial SF bubble
-        double width; //!< Width of bump in initial SF bubble
-        double scalar_mass; // Mass of the SF 
-        double r0; // location of gaussian pulse
+            center;         //!< Centre of perturbation in initial SF bubble
+        double width;       //!< Width of bump in initial SF bubble
+        double scalar_mass; // Mass of the SF
+        double r0;          // location of gaussian pulse
     };
 
     //! The constructor
@@ -38,7 +38,6 @@ class InitialAxiDilatonData
         : m_dx(a_dx), m_params(a_params)
     {
     }
-
 
     //! Function to compute the value of all the initial vars on the grid
     template <class data_t> void compute(Cell<data_t> current_cell) const
@@ -49,23 +48,27 @@ class InitialAxiDilatonData
         data_t rr2 = rr * rr;
 
         // calculate the field value WITH SPHERICAL HARMONICS
-     
-        SphericalHarmonics::Y_lm_t<data_t> Y_lm011 =
-          SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 1, 1);
-        SphericalHarmonics::Y_lm_t<data_t> Y_lm020 =
-          SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 2, 0);
-        SphericalHarmonics::Y_lm_t<data_t> Y_lm022 =
-           SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 2, 2);
-        SphericalHarmonics::Y_lm_t<data_t> Y_lm02_2 =
-           SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 2, -2);
 
-	data_t phi = m_params.amplitude / (1. + exp(-(480.-rr)/10.));
-	//data_t phi = m_params.amplitude * Y_lm011.Real / (1. + rr / 400.);
+        SphericalHarmonics::Y_lm_t<data_t> Y_lm011 =
+            SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 1,
+                                          1);
+        SphericalHarmonics::Y_lm_t<data_t> Y_lm020 =
+            SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 2,
+                                          0);
+        SphericalHarmonics::Y_lm_t<data_t> Y_lm022 =
+            SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 2,
+                                          2);
+        SphericalHarmonics::Y_lm_t<data_t> Y_lm02_2 =
+            SphericalHarmonics::spin_Y_lm(coords.x, coords.y, coords.z, 0, 2,
+                                          -2);
+
+        data_t phi = m_params.amplitude / (1. + exp(-(480. - rr) / 10.));
+        // data_t phi = m_params.amplitude * Y_lm011.Real / (1. + rr / 400.);
 
         current_cell.store_vars(phi, c_phi_Re);
         current_cell.store_vars(0.0, c_phi_Im);
         current_cell.store_vars(0.0, c_Pi_Re);
-        current_cell.store_vars(- m_params.scalar_mass * phi, c_Pi_Im);
+        current_cell.store_vars(-m_params.scalar_mass * phi, c_Pi_Im);
     }
 
   protected:

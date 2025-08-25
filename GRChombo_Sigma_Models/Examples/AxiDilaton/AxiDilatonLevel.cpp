@@ -7,11 +7,11 @@
 #include "AxiDilatonLevel.hpp"
 #include "AMRReductions.hpp"
 #include "BoxLoops.hpp"
+#include "CustomExtraction.hpp"
 #include "NanCheck.hpp"
 #include "PositiveChiAndAlpha.hpp"
 #include "SixthOrderDerivatives.hpp"
 #include "TraceARemoval.hpp"
-#include "CustomExtraction.hpp"
 
 // For RHS update
 #include "MatterCCZ4RHS.hpp"
@@ -21,16 +21,16 @@
 
 // For tag cells
 #include "FixedGridsTaggingCriterion.hpp"
-//#include "ChiAndPhiTaggingCriterion.hpp"
-//#include "FixedGridsTaggingCriterion.hpp"
+// #include "ChiAndPhiTaggingCriterion.hpp"
+// #include "FixedGridsTaggingCriterion.hpp"
 
 // Problem specific includes
+#include "AxiDilaton.hpp"
+#include "AxiDilatonPotential.hpp"
 #include "ComputePack.hpp"
 #include "GammaCalculator.hpp"
 #include "InitialAxiDilatonData.hpp"
 #include "KerrBH.hpp"
-#include "AxiDilatonPotential.hpp"
-#include "AxiDilaton.hpp"
 #include "SetValue.hpp"
 
 // ADM quantities
@@ -79,11 +79,12 @@ void AxiDilatonLevel::postRestart()
     // On restart calculate the constraints on every level
     fillAllGhosts();
     AxiDilatonPotential potential(m_p.potential_params);
-    AxiDilatonWithPotential axi_dilaton_field(potential, m_p.gamma_squared_coeff);
-    BoxLoops::loop(
-        MatterConstraints<AxiDilatonWithPotential>(
-            axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham, Interval(c_Mom, c_Mom)),
-        m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
+    AxiDilatonWithPotential axi_dilaton_field(potential,
+                                              m_p.gamma_squared_coeff);
+    BoxLoops::loop(MatterConstraints<AxiDilatonWithPotential>(
+                       axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham,
+                       Interval(c_Mom, c_Mom)),
+                   m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
 
     // Use AMR Interpolator and do lineout data extraction
     // pass the boundary params so that we can use symmetries
@@ -128,17 +129,18 @@ void AxiDilatonLevel::prePlotLevel()
 {
     fillAllGhosts();
     AxiDilatonPotential potential(m_p.potential_params);
-    AxiDilatonWithPotential axi_dilaton_field(potential,m_p.gamma_squared_coeff);
-    BoxLoops::loop(
-        MatterConstraints<AxiDilatonWithPotential>(
-            axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham, Interval(c_Mom, c_Mom)),
-        m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
+    AxiDilatonWithPotential axi_dilaton_field(potential,
+                                              m_p.gamma_squared_coeff);
+    BoxLoops::loop(MatterConstraints<AxiDilatonWithPotential>(
+                       axi_dilaton_field, m_dx, m_p.G_Newton, c_Ham,
+                       Interval(c_Mom, c_Mom)),
+                   m_state_new, m_state_diagnostics, EXCLUDE_GHOST_CELLS);
 }
 #endif
 
 // Things to do in RHS update, at each RK4 step
 void AxiDilatonLevel::specificEvalRHS(GRLevelData &a_soln, GRLevelData &a_rhs,
-                                       const double a_time)
+                                      const double a_time)
 {
     // Enforce trace free A_ij and positive chi and alpha
     BoxLoops::loop(
@@ -148,7 +150,8 @@ void AxiDilatonLevel::specificEvalRHS(GRLevelData &a_soln, GRLevelData &a_rhs,
 
     // Calculate MatterCCZ4 right hand side with matter_t = ScalarField
     AxiDilatonPotential potential(m_p.potential_params);
-    AxiDilatonWithPotential axi_dilaton_field(potential, m_p.gamma_squared_coeff);
+    AxiDilatonWithPotential axi_dilaton_field(potential,
+                                              m_p.gamma_squared_coeff);
     if (m_p.max_spatial_derivative_order == 4)
     {
         MatterCCZ4RHS<AxiDilatonWithPotential, MovingPunctureGauge,
@@ -169,7 +172,7 @@ void AxiDilatonLevel::specificEvalRHS(GRLevelData &a_soln, GRLevelData &a_rhs,
 
 // Things to do at ODE update, after soln + rhs
 void AxiDilatonLevel::specificUpdateODE(GRLevelData &a_soln,
-                                         const GRLevelData &a_rhs, Real a_dt)
+                                        const GRLevelData &a_rhs, Real a_dt)
 {
     // Enforce trace free A_ij
     BoxLoops::loop(TraceARemoval(), a_soln, a_soln, INCLUDE_GHOST_CELLS);
@@ -185,25 +188,26 @@ void AxiDilatonLevel::preTagCells()
 void AxiDilatonLevel::computeTaggingCriterion(
     FArrayBox &tagging_criterion, const FArrayBox &current_state,
     const FArrayBox &current_state_diagnostics)
- {
-     BoxLoops::loop(FixedGridsTaggingCriterion(m_dx, m_level, m_p.L, m_p.center),
-                    current_state, tagging_criterion);
+{
+    BoxLoops::loop(FixedGridsTaggingCriterion(m_dx, m_level, m_p.L, m_p.center),
+                   current_state, tagging_criterion);
 }
 
-//void AxiDilatonLevel::computeTaggingCriterion(
-//    FArrayBox &tagging_criterion, const FArrayBox &current_state,
-//    const FArrayBox &current_state_diagnostics)
-//{
-//    BoxLoops::loop(ChiAndPhiTaggingCriterion(m_dx, m_p.threshold_chi, m_p.threshold_phi),
-//                   current_state, tagging_criterion);
-//}
+// void AxiDilatonLevel::computeTaggingCriterion(
+//     FArrayBox &tagging_criterion, const FArrayBox &current_state,
+//     const FArrayBox &current_state_diagnostics)
+// {
+//     BoxLoops::loop(ChiAndPhiTaggingCriterion(m_dx, m_p.threshold_chi,
+//     m_p.threshold_phi),
+//                    current_state, tagging_criterion);
+// }
 
 void AxiDilatonLevel::specificPostTimeStep()
 {
-    #ifdef USE_AHFINDER
+#ifdef USE_AHFINDER
     if (m_p.AH_activate && m_level == m_p.AH_params.level_to_run)
         m_bh_amr.m_ah_finder.solve(m_dt, m_time, m_restart_time);
-    #endif
+#endif
 
     CH_TIME("AxiDilatonLevel::specificPostTimeStep");
     // Do the extraction on the min extraction level

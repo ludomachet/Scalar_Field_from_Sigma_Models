@@ -35,7 +35,7 @@ static const std::array<std::string, NUM_DIAGNOSTIC_VARS> variable_names = {
 
     "rho",
 
-    "M_adm", "J_adm",
+    "M_adm",    "J_adm",
 
     "Weyl4_Re", "Weyl4_Im"};
 }

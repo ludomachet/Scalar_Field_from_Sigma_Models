@@ -27,7 +27,7 @@ static const std::array<std::string, NUM_DIAGNOSTIC_VARS> variable_names = {
     "Ham",
 
     "Mom",
-    
+
     "rho",
 
     "M_adm", "J_adm"};

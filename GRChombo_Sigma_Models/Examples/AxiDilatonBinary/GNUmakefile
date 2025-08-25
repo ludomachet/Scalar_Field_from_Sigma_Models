@@ -21,19 +21,16 @@ else
 endif
 endif
 
-# User needs to specify GRCHOMBO_SOURCE location, e.g. using
-# export GRCHOMBO_SOURCE = ~/GRChombo/Source
+GRCHOMBO_SOURCE = ../../Source
 
 ebase :=  Main_AxiDilatonBinary
 
 LibNames := AMRTimeDependent AMRTools BoxTools
 
 src_dirs := $(GRCHOMBO_SOURCE)/utils \
-	    ../../Source/utils \
             $(GRCHOMBO_SOURCE)/simd  \
             $(GRCHOMBO_SOURCE)/CCZ4  \
             $(GRCHOMBO_SOURCE)/Matter  \
-	    ../../Source/Matter \
             $(GRCHOMBO_SOURCE)/BoxUtils  \
             $(GRCHOMBO_SOURCE)/GRChomboCore  \
             $(GRCHOMBO_SOURCE)/AMRInterpolator  \
