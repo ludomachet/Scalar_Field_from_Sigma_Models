@@ -15,7 +15,7 @@ namespace MatterParams
 
 struct params_t
 {
-    //Real phi_Re_0;
+    // Real phi_Re_0;
     Real dphi;
     Real dphi_length;
     Real pi_Re_0;

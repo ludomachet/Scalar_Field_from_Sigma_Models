@@ -59,11 +59,11 @@ namespace GRChomboVariables
 static constexpr char const *variable_names[NUM_GRCHOMBO_VARS] = {
     "chi",
 
-    "h11",    "h12",    "h13",    "h22", "h23", "h33",
+    "h11",    "h12",    "h13",    "h22",  "h23", "h33",
 
     "K",
 
-    "A11",    "A12",    "A13",    "A22", "A23", "A33",
+    "A11",    "A12",    "A13",    "A22",  "A23", "A33",
 
     "Theta",
 
@@ -74,13 +74,13 @@ static constexpr char const *variable_names[NUM_GRCHOMBO_VARS] = {
     "shift1", "shift2", "shift3",
 
     "B1",     "B2",     "B3",
-    
-    "phi_Re", "phi_Im", "Pi_Re", "Pi_Im"};
+
+    "phi_Re", "phi_Im", "Pi_Re",  "Pi_Im"};
 
 static constexpr std::array<int, NUM_GRCHOMBO_VARS> const vars_parity = {
-    EVEN,   EVEN,   ODD_XY, ODD_XZ, EVEN,  ODD_YZ, EVEN,  EVEN,  EVEN,
-    ODD_XY, ODD_XZ, EVEN,   ODD_YZ, EVEN,  EVEN,   ODD_X, ODD_Y, ODD_Z,
-    EVEN,   ODD_X,  ODD_Y,  ODD_Z,  ODD_X, ODD_Y,  ODD_Z, EVEN,  EVEN, EVEN, EVEN};
+    EVEN,   EVEN,  ODD_XY, ODD_XZ, EVEN,  ODD_YZ, EVEN,  EVEN,  EVEN, ODD_XY,
+    ODD_XZ, EVEN,  ODD_YZ, EVEN,   EVEN,  ODD_X,  ODD_Y, ODD_Z, EVEN, ODD_X,
+    ODD_Y,  ODD_Z, ODD_X,  ODD_Y,  ODD_Z, EVEN,   EVEN,  EVEN,  EVEN};
 
 } // namespace GRChomboVariables
 

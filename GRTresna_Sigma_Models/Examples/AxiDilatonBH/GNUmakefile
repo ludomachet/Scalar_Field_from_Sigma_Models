@@ -5,9 +5,6 @@ ifndef CHOMBO_HOME
     $(error Please define CHOMBO_HOME - see installation instructions.)
 endif
 
-# User needs to specify GRTRESNA_SOURCE location, e.g. using
-# export GRTRESNA_SOURCE = ~/GRTresna/Source
-
 # trace the chain of included makefiles
 makefiles += releasedExamples_AMRPoisson_execVariableCoefficient
 
@@ -27,19 +24,17 @@ LibNames = AMRElliptic AMRTools BoxTools
 INPUT = params.txt
 
 # application-specific targets
-src_dirs := $(GRTRESNA_SOURCE) \
-            $(GRTRESNA_SOURCE)/simd \
-            $(GRTRESNA_SOURCE)/utils \
-			$(GRTRESNA_SOURCE)/Core \
+src_dirs := ../../Source \
+            ../../Source/simd \
+            ../../Source/utils \
             ../../Source/Core \
-			$(GRTRESNA_SOURCE)/Matter \
             ../../Source/Matter \
-            $(GRTRESNA_SOURCE)/Methods \
-            $(GRTRESNA_SOURCE)/Tools \
-            $(GRTRESNA_SOURCE)/Variables \
-            $(GRTRESNA_SOURCE)/TaggingCriteria \
-	        $(GRTRESNA_SOURCE)/Operator \
-            $(GRTRESNA_SOURCE)/Operator/SolverOperator 
+            ../../Source/Methods \
+            ../../Source/Tools \
+            ../../Source/Variables \
+            ../../Source/TaggingCriteria \
+	        ../../Source/Operator \
+            ../../Source/Operator/SolverOperator 
 
 # shared code for building example programs
 include $(CHOMBO_HOME)/mk/Make.example

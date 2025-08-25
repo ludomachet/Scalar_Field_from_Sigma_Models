@@ -6,8 +6,8 @@
 #ifndef MULTIGRIDVARIABLES_HPP
 #define MULTIGRIDVARIABLES_HPP
 
-#include "MetricVariables.hpp"
 #include "AxiDilatonVariables.hpp"
+#include "MetricVariables.hpp"
 
 namespace MultigridVariables
 {
