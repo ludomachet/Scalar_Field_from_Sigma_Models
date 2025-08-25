@@ -23,9 +23,9 @@ class AxiDilaton
     using params_t = MatterParams::params_t;
 
     AxiDilaton(params_t a_matter_params,
-                PsiAndAijFunctions *a_psi_and_Aij_functions,
-                const std::array<double, SpaceDim> a_center,
-                RealVect a_domainLength)
+               PsiAndAijFunctions *a_psi_and_Aij_functions,
+               const std::array<double, SpaceDim> a_center,
+               RealVect a_domainLength)
         : m_matter_params(a_matter_params),
           psi_and_Aij_functions(a_psi_and_Aij_functions), center(a_center),
           domainLength(a_domainLength)
@@ -46,7 +46,8 @@ class AxiDilaton
     void initialise_matter_vars(LevelData<FArrayBox> &a_multigrid_vars,
                                 const RealVect &a_dx) const;
 
-    Real my_potential_function(const Real &phi_Re_here, const Real &phi_Im_here) const;
+    Real my_potential_function(const Real &phi_Re_here,
+                               const Real &phi_Im_here) const;
 
     Real my_phi_Re_function(const RealVect &locr) const;
     Real my_phi_Im_function(const RealVect &locr) const;
@@ -56,7 +57,7 @@ class AxiDilaton
 
     params_t m_matter_params;
 
-    PsiAndAijFunctions *psi_and_Aij_functions;  
+    PsiAndAijFunctions *psi_and_Aij_functions;
 
     ~AxiDilaton() {}
 
