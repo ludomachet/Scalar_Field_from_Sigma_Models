@@ -70,23 +70,24 @@ Real PsiAndAijFunctions::compute_bowenyork_psi(const RealVect &loc)
 
     RealVect J1 = m_psi_and_Aij_params.bh1_spin;
     RealVect J2 = m_psi_and_Aij_params.bh2_spin;
-    
+
     Real J1_squared = 0.;
     Real J2_squared = 0.;
-    
+
     FOR1(i)
-     {
-         J1_squared += J1[i] * J1[i];
-         J2_squared += J2[i] * J2[i];
-     }
+    {
+        J1_squared += J1[i] * J1[i];
+        J2_squared += J2[i] * J2[i];
+    }
 
     Real a1_squared = J1_squared / m1 / m1;
     Real a2_squared = 0.;
 
-    if (m2 != 0.) {
-	    a2_squared = J2_squared / m2 / m2;
+    if (m2 != 0.)
+    {
+        a2_squared = J2_squared / m2 / m2;
     }
-  
+
     // set the BH values - location
     RealVect loc_bh1;
     Real rbh1;
@@ -97,22 +98,21 @@ Real PsiAndAijFunctions::compute_bowenyork_psi(const RealVect &loc)
     get_bh_coords(rbh2, loc_bh2, loc, m_psi_and_Aij_params.bh2_offset);
 
     Real rr = 0;
-    FOR1(i)
-    {
-	    rr += loc[i] * loc[i];
-    }
+    FOR1(i) { rr += loc[i] * loc[i]; }
     rr = sqrt(rr);
 
-
-    Real rbar = rr + m1 + (m1*m1*-a1_squared)/(4.* rr);
-    Real cos_theta = loc[2]/rr;
+    Real rbar = rr + m1 + (m1 * m1 * -a1_squared) / (4. * rr);
+    Real cos_theta = loc[2] / rr;
     Real Sigma = rbar * rbar + a1_squared * cos_theta * cos_theta;
 
-    if (m2 != 0.) {
-            return  0.5 * (sqrt(m1 * m1 - a1_squared ) / rbh1)
-            + 0.5 *( sqrt(m2 * m2 - a2_squared ) / rbh2) ;
-    }else{
-	    return  0.5 * sqrt(m1 * m1 - a1_squared ) / rr;
+    if (m2 != 0.)
+    {
+        return 0.5 * (sqrt(m1 * m1 - a1_squared) / rbh1) +
+               0.5 * (sqrt(m2 * m2 - a2_squared) / rbh2);
+    }
+    else
+    {
+        return 0.5 * sqrt(m1 * m1 - a1_squared) / rr;
     }
 }
 
@@ -129,16 +129,17 @@ Real PsiAndAijFunctions::compute_bowenyork_psiBL(const RealVect &loc)
     Real J2_squared = 0.;
 
     FOR1(i)
-     {
-         J1_squared += J1[i] * J1[i];
-         J2_squared += J2[i] * J2[i];
-     }
+    {
+        J1_squared += J1[i] * J1[i];
+        J2_squared += J2[i] * J2[i];
+    }
 
     Real a1_squared = J1_squared / m1 / m1;
     Real a2_squared = 0.;
 
-    if (m2 != 0.) {
-            a2_squared = J2_squared / m2 / m2;
+    if (m2 != 0.)
+    {
+        a2_squared = J2_squared / m2 / m2;
     }
 
     // set the BH values - location
@@ -151,22 +152,22 @@ Real PsiAndAijFunctions::compute_bowenyork_psiBL(const RealVect &loc)
     get_bh_coords(rbh2, loc_bh2, loc, m_psi_and_Aij_params.bh2_offset);
 
     Real rr = 0;
-    FOR1(i)
-    {
-            rr += loc[i] * loc[i];
-    }
+    FOR1(i) { rr += loc[i] * loc[i]; }
     rr = sqrt(rr);
 
-    Real rbar = rr + m1 + (m1*m1*-a1_squared)/(4.* rr);
-    Real cos_theta = loc[2]/rr;
+    Real rbar = rr + m1 + (m1 * m1 * -a1_squared) / (4. * rr);
+    Real cos_theta = loc[2] / rr;
     Real Sigma = rbar * rbar + a1_squared * cos_theta * cos_theta;
 
-    if (m2 != 0.) {
-            return  0.5 * (sqrt(m1 * m1 - a1_squared ) / rbh1)
-            + 0.5 *( sqrt(m2 * m2 - a2_squared ) / rbh2) ;
-    }else{
-	    return 1. + 0.5 * m1 /rr;
-            //return 1. + 0.5 * sqrt(m1 * m1 - a1_squared) / rr;
+    if (m2 != 0.)
+    {
+        return 0.5 * (sqrt(m1 * m1 - a1_squared) / rbh1) +
+               0.5 * (sqrt(m2 * m2 - a2_squared) / rbh2);
+    }
+    else
+    {
+        return 1. + 0.5 * m1 / rr;
+        // return 1. + 0.5 * sqrt(m1 * m1 - a1_squared) / rr;
     }
 }
 
