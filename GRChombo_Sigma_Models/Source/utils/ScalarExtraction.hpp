@@ -58,7 +58,8 @@ class ScalarExtraction : public SphericalExtraction
             // here the std::vector<double> passed will have the
             // values of scalar_Re = scalar and scalar_Im = 0.0 as its first two
             // components
-            return std::make_pair(r * scalar_reim_parts[m_scalar_Re], r * scalar_reim_parts[m_scalar_Im]);
+            return std::make_pair(r * scalar_reim_parts[m_scalar_Re],
+                                  r * scalar_reim_parts[m_scalar_Im]);
         };
 
         // add the modes that will be integrated
